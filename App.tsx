@@ -1,14 +1,22 @@
-import { DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { useColorScheme } from 'react-native';
-import { useMemo } from 'react';
+import AlataRegular from './assets/fonts/Alata-Regular.ttf';
+import backgroundImg from './assets/images/background.png';
+import Home from './pages/Home/Home';
+import { useFonts } from 'expo-font';
+import { ImageBackground } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { s } from 'styles/index.style';
 
-import 'react-native-gesture-handler';
+const App = () => {
+  const [isFontLoaded] = useFonts({
+    'Alata-Regular': AlataRegular,
+  });
+  return (
+    <ImageBackground source={backgroundImg} style={s.img_background} imageStyle={s.img}>
+      <SafeAreaProvider>
+        <SafeAreaView style={s.container}>{isFontLoaded && <Home />}</SafeAreaView>
+      </SafeAreaProvider>
+    </ImageBackground>
+  );
+};
 
-import Navigation from './navigation';
-
-export default function App() {
-  const colorScheme = useColorScheme();
-  const theme = useMemo(() => (colorScheme === 'dark' ? DarkTheme : DefaultTheme), [colorScheme]);
-
-  return <Navigation theme={theme} />;
-}
+export default App;
