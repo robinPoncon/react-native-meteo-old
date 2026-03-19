@@ -1,22 +1,36 @@
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import AlataRegular from './assets/fonts/Alata-Regular.ttf';
-import backgroundImg from './assets/images/background.png';
 import Home from './pages/Home/Home';
 import { useFonts } from 'expo-font';
-import { ImageBackground } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { s } from 'styles/index.style';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Forecast from 'pages/Forecast/Forecast';
+import { RootStackParamList } from 'types/RootStackParamList';
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const navTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: 'transparent',
+    },
+};
 
 const App = () => {
-  const [isFontLoaded] = useFonts({
-    'Alata-Regular': AlataRegular,
-  });
-  return (
-    <ImageBackground source={backgroundImg} style={s.img_background} imageStyle={s.img}>
-      <SafeAreaProvider>
-        <SafeAreaView style={s.container}>{isFontLoaded && <Home />}</SafeAreaView>
-      </SafeAreaProvider>
-    </ImageBackground>
-  );
+    const [isFontLoaded] = useFonts({
+        'Alata-Regular': AlataRegular,
+    });
+    return (
+        <NavigationContainer theme={navTheme}>
+            {isFontLoaded && (
+                <Stack.Navigator
+                    screenOptions={{ headerShown: false, animation: 'fade' }}
+                    initialRouteName="Home">
+                    <Stack.Screen name="Home" component={Home} />
+                    <Stack.Screen name="Forecast" component={Forecast} />
+                </Stack.Navigator>
+            )}
+        </NavigationContainer>
+    );
 };
 
 export default App;

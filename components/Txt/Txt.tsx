@@ -1,14 +1,19 @@
-import { ReactNode } from "react";
-import { StyleProp, Text, TextStyle } from "react-native";
-import { s } from "./Txt.style";
+import { ReactNode } from 'react';
+import { StyleProp, StyleSheet, Text, TextStyle, useWindowDimensions } from 'react-native';
+import { s } from './Txt.style';
 
 type TxtProps = {
-	children: ReactNode;
-	style?: StyleProp<TextStyle>;
+    children: ReactNode;
+    style?: StyleProp<TextStyle>;
 };
 
 const Txt = ({ children, style }: TxtProps) => {
-	return <Text style={[s.text, style]}>{children}</Text>;
+    const { height } = useWindowDimensions();
+    const flatStyle = StyleSheet.flatten(style);
+    const fontSize = flatStyle?.fontSize || s.text.fontSize;
+    return (
+        <Text style={[s.text, style, { fontSize: fontSize * 0.00118 * height }]}>{children}</Text>
+    );
 };
 
 export default Txt;
